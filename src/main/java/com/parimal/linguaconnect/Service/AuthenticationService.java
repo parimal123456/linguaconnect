@@ -21,13 +21,15 @@ public class AuthenticationService {
     private final UserInfoRepository userInfoRepository;
 
     public UserInfo save(RegisterDto registerDto){
-        UserInfo userInfo = new UserInfo();
 
-        userInfo.setUsername(registerDto.getUsername());
-        userInfo.setEmail(registerDto.getEmail());
-        userInfo.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         Role roles = roleRepository.findByName("ROLE_USER").orElseThrow();
-        userInfo.setRoles(Collections.singletonList(roles));
+
+        UserInfo userInfo = UserInfo.builder()
+        .username(registerDto.getUsername())
+        .email(registerDto.getEmail())
+        .password(passwordEncoder.encode(registerDto.getPassword()))
+        .roles(Collections.singletonList(roles))
+        .build();
 
         return userInfoRepository.save(userInfo);
     }

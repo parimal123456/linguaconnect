@@ -30,7 +30,11 @@ public class UserInfoService implements UserDetailsService {
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles){
         return roles.stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
-
+    
+    public Optional<UserInfo> findByEmail(String email){
+        return userInfoRepository.findByEmail(email);
+    }
+    
     public boolean existsByUsername(String username){
         return userInfoRepository.existsByUsername(username);
     }
@@ -39,7 +43,4 @@ public class UserInfoService implements UserDetailsService {
         return userInfoRepository.existsByEmail(email);
     }
 
-    public Optional<UserInfo> findByEmail(String email){
-        return userInfoRepository.findByEmail(email);
-    }
 }
