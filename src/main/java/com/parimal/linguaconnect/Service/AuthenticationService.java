@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;                                       
     private final UserInfoRepository userInfoRepository;
 
     public UserInfo save(RegisterDto registerDto){

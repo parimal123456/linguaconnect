@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,16 +37,16 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
 
+        if (userInfoService.existsByEmail(registerDto.getEmail())) {
+            return new ResponseEntity<>("Email is already taken", HttpStatus.BAD_REQUEST);
+        }
         if (userInfoService.existsByUsername(registerDto.getUsername())) {
             return new ResponseEntity<>("Username is taken", HttpStatus.BAD_REQUEST);
-        }
-        if (userInfoService.existsByEmail(registerDto.getEmail())) {
-            return new ResponseEntity<>("Email is already registered", HttpStatus.BAD_REQUEST);
         }
 
         UserInfo userInfo=authenticationService.save(registerDto);
 
-        UserDetails userDetails = userInfoService.loadUserByUsername(userInfo.getUsername());
+        UserDetails userDetails = userInfoService.loadUserByUsername(userInfo.getEmail());
         String jwtToken = jwtService.generateToken(userDetails);
 
         tokenService.save(userInfo,jwtToken);
@@ -60,25 +59,21 @@ public class AuthController {
         Authentication authentication;
         try{
             authentication= authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+            new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         }
         catch(AuthenticationException e){
             return new ResponseEntity<>("Not Authenticated User- "+e.getMessage(),HttpStatus.BAD_REQUEST);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetails userDetails = userInfoService.loadUserByUsername(loginDto.getUsername());
+        UserDetails userDetails = userInfoService.loadUserByUsername(loginDto.getEmail());
         String jwtToken = jwtService.generateToken(userDetails);
 
-        UserInfo userInfo=userInfoService.findByUsername(loginDto.getUsername()).orElseThrow();
+        UserInfo userInfo=userInfoService.findByEmail(loginDto.getEmail()).orElseThrow();
         tokenService.revokeAllUserTokens(userInfo);
         tokenService.save(userInfo,jwtToken);
 
         return new ResponseEntity<>(jwtToken, HttpStatus.OK);
     }
 
-    @GetMapping("logout/message")
-    public ResponseEntity<String> logot(){
-        return new ResponseEntity<>("successfully logged out",HttpStatus.OK);
-    }
 }

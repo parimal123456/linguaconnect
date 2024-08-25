@@ -22,9 +22,9 @@ public class UserInfoService implements UserDetailsService {
     private final UserInfoRepository userInfoRepository;
     
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfo user= userInfoRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("username not found"));
-        return new User(user.getUsername(),user.getPassword(),mapRolesToAuthorities(user.getRoles()));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserInfo user= userInfoRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("username not found"));
+        return new User(user.getEmail(),user.getPassword(),mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles){
@@ -39,7 +39,7 @@ public class UserInfoService implements UserDetailsService {
         return userInfoRepository.existsByEmail(email);
     }
 
-    public Optional<UserInfo> findByUsername(String username){
-        return userInfoRepository.findByUsername(username);
+    public Optional<UserInfo> findByEmail(String email){
+        return userInfoRepository.findByEmail(email);
     }
 }
