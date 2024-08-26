@@ -30,6 +30,10 @@ public class UserInfoService implements UserDetailsService {
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<Role> roles){
         return roles.stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
+    public UserInfo save(UserInfo userInfo){
+        return userInfoRepository.save(userInfo);
+    }
     
     public Optional<UserInfo> findByEmail(String email){
         return userInfoRepository.findByEmail(email);

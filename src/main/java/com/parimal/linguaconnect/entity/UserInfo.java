@@ -1,7 +1,6 @@
 package com.parimal.linguaconnect.entity;
 
-import java.util.ArrayList;
-
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.CurrentTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,32 +17,40 @@ import java.util.*;
 @Entity
 @Table(name = "userinfo")
 @Data
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfo {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Column(nullable = false)
-	private String username;
-    @Column(unique = true,nullable = false)
+    private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     @Column(nullable = false)
-	private String password;
-	@CurrentTimestamp
-	@Column(updatable = false,nullable =false)
-	@JsonIgnore
-	private java.sql.Timestamp createdon;
+    private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-	@JoinTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-		inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id")
-	)
-	private List<Role> roles = new ArrayList<>();
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false)
+    @JsonIgnore
+    private java.sql.Timestamp createdon;
 
-	@OneToMany(mappedBy = "userInfo")
-	private List<Token> tokens;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role",
+               joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
+
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    private List<Token> tokens;
+
+    @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    private Teacher teacher;
+
+    @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    private Student student;
 }

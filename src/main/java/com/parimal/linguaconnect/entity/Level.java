@@ -1,7 +1,7 @@
 package com.parimal.linguaconnect.entity;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,19 +9,16 @@ import lombok.Setter;
 import java.util.*;
 
 @Entity
-@Table(name = "role")
+@Table(name = "level")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true, nullable = false)
-    private String name;
-
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<UserInfo> users;
+    @Column(nullable = false)
+    private String level;
 }
-

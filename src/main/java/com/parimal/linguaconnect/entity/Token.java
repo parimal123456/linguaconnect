@@ -11,17 +11,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    private long id;
+
     private String token;
+
     private boolean expired;
+
     private boolean revoked;
 
     @ManyToOne
