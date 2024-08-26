@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.util.*;
 
 @Entity
@@ -23,6 +21,7 @@ public class Teacher {
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id")
     private UserInfo userInfo;
+    
     @Column(nullable = false)
     private int experience;
 
@@ -35,5 +34,5 @@ public class Teacher {
     private List<Language> languages;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TeacherLanguage> teacherLanguages;
+    private List<PricePerHour> pricePerHours;
 }

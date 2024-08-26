@@ -3,9 +3,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.util.*;
 
 @Entity
@@ -28,5 +26,5 @@ public class Student {
     @JoinTable(name = "student_course",
                joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
-    private List<TeacherLanguageCourse> teacherLanguageCourses;
+    private List<Course> Courses;
 }

@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherLanguageCourse {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacherLanguage_id", nullable = false)
-    private TeacherLanguage teacherLanguage;
+    @JoinColumn(name = "priceperhour_id", nullable = false)
+    private PricePerHour pricePerHour;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sessionLength_id", nullable = false)
@@ -31,7 +31,7 @@ public class TeacherLanguageCourse {
     @JoinColumn(name = "slot_id", nullable = false)
     private Slot slot;
 
-    @ManyToMany(mappedBy = "teacherLanguageCourses", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "Courses", fetch = FetchType.LAZY)
     private List<Student> students;
 
     

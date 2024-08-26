@@ -109,7 +109,7 @@ public class UserInfoController {
         }
         Student student= Student.builder()
                                 .userInfo(userInfo)
-                                .teacherLanguageCourses(List.of())
+                                .Courses(List.of())
                                 .build();
 
         studentRepository.save(student);

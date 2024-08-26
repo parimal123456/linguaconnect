@@ -13,18 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.parimal.linguaconnect.Dto.SubscribeDto;
 import com.parimal.linguaconnect.Service.UserInfoService;
 import com.parimal.linguaconnect.entity.Student;
-import com.parimal.linguaconnect.entity.TeacherLanguage;
-import com.parimal.linguaconnect.entity.TeacherLanguageCourse;
+import com.parimal.linguaconnect.entity.Course;
 import com.parimal.linguaconnect.entity.UserInfo;
-import com.parimal.linguaconnect.repository.LanguageRepository;
-import com.parimal.linguaconnect.repository.LevelRepository;
-import com.parimal.linguaconnect.repository.SessionLengthRepository;
-import com.parimal.linguaconnect.repository.SlotRepository;
 import com.parimal.linguaconnect.repository.StudentRepository;
-import com.parimal.linguaconnect.repository.TeacherLanguageCourseRepository;
-import com.parimal.linguaconnect.repository.TeacherLanguageRepository;
-import com.parimal.linguaconnect.repository.TeacherRepository;
-
+import com.parimal.linguaconnect.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,19 +25,19 @@ import lombok.RequiredArgsConstructor;
 public class StudentController {
 
     private final UserInfoService userInfoService;
-    private final TeacherLanguageCourseRepository teacherLanguageCourseRepository;
+    private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
 
     @PostMapping("subscribe")
     public ResponseEntity<?> subscribeToCourse(@RequestBody SubscribeDto subscribeDto,Authentication authentication){
         UserDetails userDetails=(UserDetails)authentication.getPrincipal();
         UserInfo userInfo=userInfoService.findByEmail(userDetails.getUsername()).orElseThrow(()->new UsernameNotFoundException("user not registered"));
-        TeacherLanguageCourse teacherLanguageCourse=teacherLanguageCourseRepository.findById(Long.valueOf(subscribeDto.getId())).orElseThrow(()->new UsernameNotFoundException("Course Not present"));
+        Course course=courseRepository.findById(Long.valueOf(subscribeDto.getId())).orElseThrow(()->new UsernameNotFoundException("Course Not present"));
         Student student=studentRepository.findByUserInfoId(userInfo.getId()).orElseThrow(()->new UsernameNotFoundException("user not enrolled as student"));
-        teacherLanguageCourse.getStudents().add(student);
-        student.getTeacherLanguageCourses().add(teacherLanguageCourse);
+        course.getStudents().add(student);
+        student.getCourses().add(course);
 
-        teacherLanguageCourseRepository.save(teacherLanguageCourse);
+        courseRepository.save(course);
         studentRepository.save(student);
 
         return new ResponseEntity<>("Successfully registered for the Course",HttpStatus.OK);

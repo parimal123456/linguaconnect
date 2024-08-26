@@ -9,12 +9,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "teacherLanguage")
+@Table(name = "pricePerHour")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherLanguage {
+public class PricePerHour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,6 +34,6 @@ public class TeacherLanguage {
     @Column(nullable = false)
     private double pricePerHour;
 
-    @OneToMany(mappedBy = "teacherLanguage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TeacherLanguageCourse> TeacherLanguageCourses;
+    @OneToMany(mappedBy = "pricePerHour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Course> Courses;
 }

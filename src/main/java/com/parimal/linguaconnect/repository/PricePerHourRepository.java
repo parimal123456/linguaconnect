@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.parimal.linguaconnect.entity.Language;
 import com.parimal.linguaconnect.entity.Level;
 import com.parimal.linguaconnect.entity.Teacher;
-import com.parimal.linguaconnect.entity.TeacherLanguage;
+import com.parimal.linguaconnect.entity.PricePerHour;
 
-public interface TeacherLanguageRepository extends JpaRepository<TeacherLanguage, Long> {
-    Optional<TeacherLanguage> findByTeacherAndLanguageAndLevel(Teacher teacher, Language language, Level level);
+public interface PricePerHourRepository extends JpaRepository<PricePerHour, Long> {
+    Optional<PricePerHour> findByTeacherAndLanguageAndLevel(Teacher teacher, Language language, Level level);
 }
 
